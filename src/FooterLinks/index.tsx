@@ -8,7 +8,16 @@ import {
   useTranslation
 } from 'react-i18next';
 
-export const FooterLinks: React.FC = () => {
+import {
+  ClientPluginComponentProps
+} from '@terrestris/shogun-gis-client/dist/plugin';
+
+export type MapToolbarProps = ClientPluginComponentProps & React.ComponentProps<'div'> & {};
+
+export const FooterLinks: React.FC<MapToolbarProps> = ({
+  map,
+  client
+}) => {
 
   const {
     t
