@@ -1,9 +1,5 @@
 module.exports = {
-  globals: {
-    DEV_MODE: false,
-    jobStatusPluginConfig: {},
-    eoProcessingPluginConfig: {}
-  },
+  globals: {},
   moduleFileExtensions: ['ts', 'js'],
   transform: {
     '^.+\\.jsx?$': '<rootDir>/node_modules/babel-jest',
