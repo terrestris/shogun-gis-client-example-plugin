@@ -1,7 +1,6 @@
 const path = require('path');
 
 const { ModuleFederationPlugin } = require('@module-federation/enhanced/rspack');
-const rspack = require('@rspack/core');
 
 module.exports = {
   entry: './src/index.ts',
@@ -92,7 +91,7 @@ module.exports = {
           singleton: true
         },
         'react-i18next': {
-          requiredVersion: '^14',
+          requiredVersion: '^15',
           singleton: true
         },
         'ol/': {
