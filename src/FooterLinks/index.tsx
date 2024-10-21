@@ -14,17 +14,19 @@ import {
 
 export type MapToolbarProps = ClientPluginComponentProps & React.ComponentProps<'div'> & {};
 
-export const FooterLinks: React.FC<MapToolbarProps> = ({
-  map,
-  client
-}) => {
+/**
+ * The plugin receives the following props to access the client resources:
+ *   * map: The OpenLayers map instance.
+ *   * client: The SHOGunAPIClient instance.
+ */
+export const FooterLinks: React.FC<MapToolbarProps> = () => {
 
   const {
     t
   } = useTranslation();
 
   const openLink = (): void => {
-    window.open('https://github.com/terrestris/shogun-gis-client-plugins');
+    window.open('https://github.com/terrestris/shogun-gis-client-example-plugin');
   };
 
   return (
