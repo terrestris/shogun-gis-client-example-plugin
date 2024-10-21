@@ -1,12 +1,9 @@
-const CopyPlugin = require('copy-webpack-plugin');
-const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
-const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const TerserPlugin = require('terser-webpack-plugin');
+const rspack = require('@rspack/core');
 const {
   merge
 } = require('webpack-merge');
 
-const common = require('./webpack.common.js');
+const common = require('./rspack.common.js');
 
 module.exports = merge(common, {
   mode: 'production',
@@ -15,7 +12,7 @@ module.exports = merge(common, {
     rules: [{
       test: /\.less|\.css$/,
       use: [
-        MiniCssExtractPlugin.loader,
+        rspack.CssExtractRspackPlugin.loader,
         {
           loader: 'css-loader'
         }, {
@@ -29,8 +26,7 @@ module.exports = merge(common, {
     }]
   },
   plugins: [
-    process.env.BUNDLE_ANALYZE && new (require('webpack-bundle-analyzer')).BundleAnalyzerPlugin(),
-    new CopyPlugin({
+    new rspack.CopyRspackPlugin({
       patterns: [
         {
           from: 'resources/public',
@@ -39,7 +35,7 @@ module.exports = merge(common, {
         }
       ]
     }),
-    new MiniCssExtractPlugin({
+    new rspack.CssExtractRspackPlugin({
       filename: '[name].[contenthash].css'
     })
   ].filter(Boolean),
@@ -47,10 +43,8 @@ module.exports = merge(common, {
     filename: '[name].[contenthash].js'
   },
   optimization: {
-    minimize: true,
-    minimizer: [
-      new TerserPlugin(),
-      new CssMinimizerPlugin()
-    ]
+    runtimeChunk: {
+      name: 'manifest'
+    }
   }
 });

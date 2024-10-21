@@ -14,7 +14,7 @@ export const FooterLinksPlugin: ClientPlugin = {
     insertionIndex: 2
   },
   component: FooterLinks,
-  i18n: footerLinksPluginLocale,
+  i18n: footerLinksPluginLocale
 };
 
 export default FooterLinksPlugin;

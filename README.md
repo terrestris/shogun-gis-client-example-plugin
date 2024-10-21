@@ -1,79 +1,84 @@
-# SHOGun GIS Client example Plugin
+# SHOGun GIS Client example plugin
 
-This repository contains an example plugin for the [SHOGun-GIS-Client](https://github.com/terrestris/shogun-gis-client).
+This repository contains an example plugin for the [SHOGun GIS client](https://github.com/terrestris/shogun-gis-client). In this example an additional button is rendered to the footer bar of the client.
 
 ## Development 🧑‍💻
 
 Checkout the repository and install all required dependencies via
 
-```
+```bash
 npm i
 ```
 
 While it's absolutely possible to run the client via
 
-```
+```bash
 npm run start
 ```
 
-to have the application available at [https://localhost:4000](https://localhost:4000) you usually want to start the
-full SHOGun stack for development. Please refer to the [SHOGun-docker](https://github.com/terrestris/shogun-docker)
-repository and add the following sequence to your `./shogun-client/config/gis-client-config.js`:
+to have the plugin available at [https://localhost:4000](https://localhost:4000) you usually want to start the
+full SHOGun stack for development. Please refer to the [SHOGun Docker](https://github.com/terrestris/shogun-docker)
+repository for a complete example.
 
-```
+If you want to add the plugin to an existing setup, please ensure the following steps:
+
+1. Ensure you have added the following sequence to your `./shogun-client/config/gis-client-config.js`:
+
+```js
 plugins: [{
   name: 'ExamplePlugin',
+  resourcePath: '/client-plugins/index.js',
   exposedPaths: [
     './FooterLinks'
-  ],
-  resourcePath: '/client-plugins/index.js'
+  ]
 }]
 ```
 
-Additionally you need to expose your new plugin (assumption: webpack dev server of plugin uses port 4123) in your nginx config (e.g. `./shogun-nginx/dev/default.conf`) as follows:
+2. Expose the plugin in your nginx config (e.g. `./shogun-nginx/dev/default.conf`) as follows:
 
 ```
-location /toBeDefined/client-plugins/ {
-    proxy_pass http://my-new-plugin-service:8080/;
+location /client-plugins/ {
+  proxy_pass http://shogun-client-plugins:8080/;
 
-    proxy_set_header Host $host;
-    proxy_set_header X-Real-IP $remote_addr;
-    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-    proxy_set_header X-Forwarded-Proto $scheme;
-    proxy_set_header X-Forwarded-Port $server_port;
+  # WebSocket support (nginx 1.4)
+  proxy_http_version 1.1;
+  proxy_set_header Upgrade $http_upgrade;
+  proxy_set_header Connection "upgrade";
 
-    # WebSocket support (nginx 1.4)
-    proxy_http_version 1.1;
-    proxy_set_header Upgrade $http_upgrade;
-    proxy_set_header Connection "upgrade";
-  }
+  proxy_set_header Host $host;
+  proxy_set_header X-Real-IP $remote_addr;
+  proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+  proxy_set_header X-Forwarded-Proto $scheme;
+  proxy_set_header X-Forwarded-Port $server_port;
+}
 ```
 
-And finally add a docker container for the plugin in your `docker-compose.yml`:
+3. Finally add a compose service for the plugin in your `docker-compose.yml`:
 
-```
+```yaml
 shogun-client-plugins:
-    extends:
-      file: ./common-services.yml
-      service: shogun-client-plugins
-    build:
-      context: ${SHOGUN_CLIENT_PLUGINS_DIR}
-      dockerfile: Dockerfile.dev
-    volumes:
-      - ${SHOGUN_CLIENT_PLUGINS_DIR}:/app
+  extends:
+    file: ./common-services.yml
+    service: shogun-client-plugins
+  build:
+    context: ${SHOGUN_CLIENT_PLUGINS_DIR}
+    dockerfile: Dockerfile.dev
+  volumes:
+    - ${SHOGUN_CLIENT_PLUGINS_DIR}:/app
 ```
 
 And `common-services.yml` if present:
 
-```
+```yaml
 shogun-client-plugins:
   container_name: ${CONTAINER_NAME_PREFIX}-gis-client-plugins
 ```
 
-Since we make use of variables within the `docker-compose.yml` and the `common-services.yml` we would need to add the variable to your `./.env` as follow:
+Since we make use of variables within the `docker-compose.yml` and the `common-services.yml` we would
+need to add the variable to your `.env` as follows:
 
-```
+```bash
 SHOGUN_CLIENT_PLUGINS_DIR=../shogun-gis-client-plugins
 ```
 
-Further information for the plugin development can also be found in the [SHOGun-gis-client Repository](https://github.com/terrestris/shogun-gis-client/tree/main/src/plugin)
+Further information for the plugin development can also be found in the [SHOGun GIS client repository](https://github.com/terrestris/shogun-gis-client/tree/main/src/plugin).
