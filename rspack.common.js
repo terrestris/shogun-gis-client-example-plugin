@@ -95,7 +95,7 @@ module.exports = {
           singleton: true
         },
         'ol/': {
-          requiredVersion: '^9',
+          requiredVersion: '^10',
           singleton: true
         }
       }
