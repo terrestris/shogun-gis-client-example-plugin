@@ -1,6 +1,5 @@
 const path = require('path');
 
-// const ReactRefreshPlugin = require('@rspack/plugin-react-refresh');
 const { merge } = require('webpack-merge');
 
 const common = require('./rspack.common.js');
@@ -29,8 +28,5 @@ module.exports = merge(common, {
         }
       }]
     }]
-  },
-  // plugins: [
-  //   new ReactRefreshPlugin()
-  // ]
+  }
 });
