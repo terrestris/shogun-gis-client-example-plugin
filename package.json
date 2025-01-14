@@ -1,6 +1,6 @@
 {
   "name": "shogun-gis-client-plugins",
-  "version": "1.0.1",
+  "version": "1.0.0",
   "description": "This is an example plugin for SHOGUN",
   "keywords": [
     "shogun",
