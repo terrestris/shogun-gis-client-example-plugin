@@ -26,25 +26,11 @@ module.exports = merge(common, {
     }]
   },
   plugins: [
-    new rspack.CopyRspackPlugin({
-      patterns: [
-        {
-          from: 'resources/public',
-          filter: (filepath) => !filepath.endsWith('.ejs'),
-          noErrorOnMissing: true
-        }
-      ]
-    }),
     new rspack.CssExtractRspackPlugin({
       filename: '[name].[contenthash].css'
     })
   ].filter(Boolean),
   output: {
     filename: '[name].[contenthash].js'
-  },
-  optimization: {
-    runtimeChunk: {
-      name: 'manifest'
-    }
   }
 });
