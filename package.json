@@ -33,7 +33,7 @@
     "not IE 11"
   ],
   "dependencies": {
-    "@terrestris/shogun-gis-client": "^9.0.0-next.1"
+    "@terrestris/shogun-gis-client": "^9.0.0-next.5"
   },
   "devDependencies": {
     "@babel/core": "^7.25.8",
@@ -74,7 +74,7 @@
     "webpack-merge": "^6.0.1"
   },
   "engines": {
-    "node": "20",
+    "node": "22",
     "npm": ">=7"
   }
 }
